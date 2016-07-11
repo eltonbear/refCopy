@@ -5,22 +5,19 @@ from os.path import isfile, split, splitext
 
 class App(Frame):
 
-	def __init__(self, parent, refLimit, wireLimit):            
+	def __init__(self, parent, refLimit):            
 
 		Frame.__init__(self, parent)
 		self.allEmpty = True
-		self.refLimit = refLimit
-		self.wireLimit = wireLimit
+		self.refNameElements = [] ############## passed in
 		self.isOk = False
 		self.parent = parent
 		self.refs = []
 		self.types = []
-		self.deps = []
-		self.wires = []
+		self.names= []
 		self.refEntries = []
 		self.typeEntries = []
-		self.depEntries = []
-		self.wireEntries = [] # a list of lists
+		self.nameEntries = []
 		self.x = 1
 		self.y = 1
 		self.entryFrame = None
@@ -46,11 +43,11 @@ class App(Frame):
 		self.y += 1
 
 		### Name entry
-		Ld = Label(self.entryFrame, text = "    Name:  R").grid(row = self.x, column = self.y%6 , pady=5)
+		Ln = Label(self.entryFrame, text = "    Name:  R").grid(row = self.x, column = self.y%6 , pady=5)
 		self.y += 1
-		Ed = Entry(self.entryFrame, bd = 5, width = 4)
-		Ed.grid(row = self.x, column = self.y%6, pady=5)
-		self.depEntries.append(Ed)
+		En = Entry(self.entryFrame, bd = 5, width = 4)
+		En.grid(row = self.x, column = self.y%6, pady=5)
+		self.nameEntries.append(En)
 		self.y += 1
 
 		### Type entry
@@ -83,23 +80,15 @@ class App(Frame):
 			self.closeWindow()
 						
 	def getContent(self): 
-		''' Get inputs in ref, type, dependon, and wire entries. Return true if successful'''
+		''' Get inputs in ref, name, and type entries. Return true if successful'''
 		for num in range(0, len(self.refEntries)):
 			ref = self.refEntries[num].get()
+			nam = self.nameEntries[num].get() ####### this will be the dependoon
 			typ = self.typeEntries[num].get()
-			dep = self.depEntries[num].get()
-			wireList = []
-			wireListTemp = self.wireEntries[num].get().split(",")
-			for n in range(0, len(wireListTemp)):
-				temp = wireListTemp[n].strip()
-				if temp != "":
-					wireList.append(temp)
-
-			if self.IfErrorAndappendLists(num + 1, ref, typ, dep, wireList):
+			if self.IfErrorAndappendLists(num + 1, ref, nam, typ):
 				self.refs = []
 				self.types = []
 				self.deps = []
-				self.wires = []
 				return False
 
 		if self.allEmpty:
@@ -108,7 +97,7 @@ class App(Frame):
 
 		return True
 
-	def IfErrorAndappendLists(self, row, ref, typ, dep, wire):
+	def IfErrorAndappendLists(self, row, ref, nam, typ):
 		''' Append to ref, type, dep, and wire list if no entries is emtpy. 
 			Return true if there is any entries missing or incorrect. 
 			All missing is not missing'''
@@ -134,7 +123,7 @@ class App(Frame):
 			self.wireEntryMissingWarning(row)
 			return True
 
-	def numberInRange(self, row, ref, dep, wire):  
+	def numberInRange(self, row, ref, nam):   ###################################### ref num needs to be in the list, and nam needs to be in the gap
 		""" check if ref and wire numbers are in range. 
 			Wire and ref numbers have to be int and grater than 0""" 
 		try:
