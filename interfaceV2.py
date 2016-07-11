@@ -38,39 +38,31 @@ class App(Frame):
 	def addEntry(self):
 		### using grid for entries' positions
 		### Ref entry
-		Label(self.entryFrame, text = "Reference Number: ").grid(row = self.x, column = self.y%8, padx=5 , pady=5)
+		Label(self.entryFrame, text = " Reference to copy:  R").grid(row = self.x, column = self.y%6, pady=5)
 		self.y += 1
 		Er = Entry(self.entryFrame, bd = 5, width = 4)
-		Er.grid(row = self.x, column = self.y%8, padx=5 , pady=5)
+		Er.grid(row = self.x, column = self.y%6 , pady=5)
 		self.refEntries.append(Er)
 		self.y += 1
 
-		# ### Type entry
-		Lt = Label(self.entryFrame, text = "Reference Type: ").grid(row = self.x, column = self.y%8, padx=5 , pady=5)
-		self.y += 1
-		Et = Entry(self.entryFrame, bd = 5, width = 9)
-		Et.grid(row = self.x, column = self.y%8, padx=5 , pady=5)
-		self.typeEntries.append(Et)
-		self.y += 1
-
-		### Dep entry
-		Ld = Label(self.entryFrame, text = "Depends on Ref: ").grid(row = self.x, column = self.y%8, padx=5 , pady=5)
+		### Name entry
+		Ld = Label(self.entryFrame, text = "    Name:  R").grid(row = self.x, column = self.y%6 , pady=5)
 		self.y += 1
 		Ed = Entry(self.entryFrame, bd = 5, width = 4)
-		Ed.grid(row = self.x, column = self.y%8, padx=5 , pady=5)
+		Ed.grid(row = self.x, column = self.y%6, pady=5)
 		self.depEntries.append(Ed)
 		self.y += 1
 
-		### Wire entry
-		Lw = Label(self.entryFrame, text = "Wire Numbers: ").grid(row = self.x, column = self.y%8, padx=5 , pady=5)
+		### Type entry
+		Lt = Label(self.entryFrame, text = "    Type:").grid(row = self.x, column = self.y%6, pady=5)
 		self.y += 1
-		Ew = Entry(self.entryFrame, bd = 5, width = 25)
-		Ew.grid(row = self.x, column = self.y%8+8, padx=5 , pady=5)
-		self.wireEntries.append(Ew)
+		Et = Entry(self.entryFrame, bd = 5, width = 9)
+		Et.grid(row = self.x, column = self.y%6+6, padx = 5, pady=5)
+		self.typeEntries.append(Et)
 		self.y += 1
 		
 		### increment
-		self.x = self.x + 1 
+		self.x = self.x + 1  
 
 	def closeWindow(self):
 		self.parent.destroy()
