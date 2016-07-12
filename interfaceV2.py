@@ -80,12 +80,12 @@ class App(Frame):
 			self.closeWindow()
 						
 	def getContent(self): 
-		''' Get inputs in ref, name, and type entries. Return true if successful'''
+		''' Get inputs in oldName, name, and type entries. Return true if successful'''
 		for num in range(0, len(self.refEntries)):
-			ref = self.refEntries[num].get()
+			oNam = self.refEntries[num].get()
 			nam = self.nameEntries[num].get()
 			typ = self.typeEntries[num].get()
-			if self.ifErrorAndAppendLists(num + 1, ref, nam, typ):
+			if self.ifErrorAndAppendLists(num + 1, oNam, nam, typ):
 				self.refs = []
 				self.names = []
 				self.types = []
@@ -97,23 +97,23 @@ class App(Frame):
 
 		return True
 
-	def ifErrorAndAppendLists(self, row, ref, newName, typ):
-		''' Append to ref, type, dep, and wire list if no entries is emtpy. 
+	def ifErrorAndAppendLists(self, row, oldName, newName, typ):
+		''' Append to oldName, type, dep, and wire list if no entries is emtpy. 
 			Return true if there is any entries missing or incorrect. 
 			if all missing, return false
 			if all exist, append if all in range and formatted correctly'''
-		if ref and newName and typ:
-			if self.numberInRange(row, ref, newName):
-				self.refs.append(ref)
+		if oldName and newName and typ:
+			if self.numberInRange(row, oldName, newName):
+				self.refs.append(oldName)
 				self.names.append(newName)
 				self.types.append(typ)				 
 				self.allEmpty = False
 				return False # other three exist(dep does not matter)
 			else:
 				return True
-		elif (not newName) and (not ref) and (not typ):
+		elif (not newName) and (not oldName) and (not typ):
 			return False
-		elif not ref:
+		elif not oldName:
 			self.refEntryMissingWarning(row)
 			return True 
 		elif not newName:
@@ -124,8 +124,8 @@ class App(Frame):
 			return True
 
 	def numberInRange(self, row, oldName, newName):
-		""" check if ref and wire numbers are in range. 
-			Wire and ref numbers have to be int and grater than 0""" 
+		""" check if oldName and wire numbers are in range. 
+			Wire and oldName numbers have to be int and grater than 0""" 
 		if oldName.isdigit():
 			if oldName not in self.refNameList:
 				self.refNumOutOfRangeWarning(row)

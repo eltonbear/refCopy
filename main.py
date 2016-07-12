@@ -17,7 +17,7 @@ if browse.isOk:
 	except ET.ParseError:                       
 		browse.fileFormatIncorrectWarning()
 		fFormat = False
-
+	### make a ElementTree object and find its root (highest node)   
 	root = tree.getroot() 
 	referenceE = root.findall('ReferenceSystem')
 	wireE = root.findall('Wire')
@@ -26,9 +26,9 @@ if browse.isOk:
 		fFormat = False 
 
 	if fFormat:
-		makeXMLInfoTextFile(browse.filePath, browse.xmlFolderPath, browse.xmlFileName, referenceE, wireE)
+		refNameList = makeXMLInfoTextFile(browse.filePath, browse.xmlFolderPath, browse.xmlFileName, referenceE, wireE)
 		window2 = Tk()
-		GUI = interfaceV2.App(window2, None)
+		GUI = interfaceV2.App(window2, refNameList)
 		window2.mainloop()
 
 		if GUI.isOk:
@@ -36,7 +36,7 @@ if browse.isOk:
 			print("Name: " + str(GUI.names))
 			print("Type: " + str(GUI.types))
 			print("In main folder path: " + browse.xmlFolderPath + '\n')
-			# xmlFilePathNew = modifier(browse.filePath, browse.xmlFolderPath, browse.xmlFileName, GUI.refs, GUI.types, GUI.deps, GUI.wires, referenceE, wireE, tree)
+			xmlFilePathNew = modifier(browse.xmlFolderPath, browse.xmlFileName, GUI.refs, GUI.names, GUI.types, referenceE, wireE, tree)
 			makeReceiptTextFile(None, browse.xmlFolderPath, browse.xmlFileName, GUI.refs, GUI.names, GUI.types)
 			
 	print("end of code")

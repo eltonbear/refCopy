@@ -1,9 +1,9 @@
-import xml.etree.ElementTree as ET
+# import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ElementTree, Element, SubElement
 
-def modifier(xmlFilePath, xmlFolderPath, xmlFileName, refList, typeList, depList, wireList, referenceE, wireE, tree):
-	### make a ElementTree object and find its root (highest node)                     
-	root = tree.getroot()
+def modifier(xmlFolderPath, xmlFileName, refList, nameList, typeList, referenceE, wireE, tree):
+	### make a ElementTree object and find its root (highest node)   
+	root = tree.getroot() 
 	### make two lists of all reference elements(objects) and wire elements(objects)
 	numOfRef = len(referenceE)
 	numOfWire = len(wireE)
@@ -13,37 +13,36 @@ def modifier(xmlFilePath, xmlFolderPath, xmlFileName, refList, typeList, depList
 		if refList[n]:
 			for r in referenceE:
 				if refList[n] == r.find('Name').text:
-					copy = writeARefCopy(r, numOfRef + 1, typeList[n], depList[n])
-					root.insert(numOfRef, copy)
-					numOfRef += 1
+					copy = writeARefCopy(r, refList[n], nameList[n], typeList[n])
+					root.insert(int(nameList[n])-1, copy) ################## error caused by insert with random index??
 					break
 
 		### change wire's ref information		
-		modifyWireRefInfo(wireList[n], refList[n], str(numOfRef), wireE)
+		# modifyWireRefInfo(wireList[n], refList[n], str(numOfRef), wireE)
 
 	### write to a new xml file
 	newXmlFilePath = xmlFolderPath + "/" + xmlFileName + "_new.xml"
 	tree.write(newXmlFilePath)
 	return newXmlFilePath
 
-def writeARefCopy(refToCopy, nameOfRef, typ, dependon):
+def writeARefCopy(refToCopy, oldName, newName, typ): 
 	### creat new referenceSystem node
-	newRef = Element('ReferenceSystem')
-	newName = SubElement(newRef, 'Name')
-	newName.text = str(nameOfRef)
-	newType = SubElement(newRef, 'Type')
-	newType.text = typ
+	newRefEle = Element('ReferenceSystem')
+	newNameEle = SubElement(newRefEle, 'Name')
+	newNameEle.text = 'R' + newName
+	newTypeEle = SubElement(newRefEle, 'Type')
+	newTypeEle.text = typ
 	#######################################
-	newDep = SubElement(newRef, 'Dependon')
-	newDep.text = dependon
+	newDepEle = SubElement(newRefEle, 'Dependon')
+	newDepEle.text = 'R' + oldName
 	#######################################
 	### creat two nodes that refer to original points objects(elements)
 	for p in refToCopy.findall('Point'):
-		newRef.append(p)
+		newRefEle.append(p)
 	### formatting xml text so it prints nicly 
-	indent(newRef, 1)
+	indent(newRefEle, 1)
 	### return the reference(address) of the ref element
-	return newRef
+	return newRefEle
 
 def modifyWireRefInfo(listOfWires, oldRefWireWasOn, newRefWireAssignedTo, wireElement):
 	wireToEdit = list(map(int, listOfWires))

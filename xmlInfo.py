@@ -12,8 +12,8 @@ def makeXMLInfoTextFile(xmlFilePath, xmlFolderPath, xmlFileName, referenceE, wir
 	
 	### Creat Info file and write if xmlfolder is valid
 	if exists(xmlFolderPath):
-		refName = []
-		refNameGap = []
+		refName = [] #str
+		refNameGap = [] #int
 		repeat = []
 		numOfwire = len(wireE)
 		numOfRef = len(referenceE)
@@ -79,6 +79,7 @@ def makeXMLInfoTextFile(xmlFilePath, xmlFolderPath, xmlFileName, referenceE, wir
 		info.close()
 		### Open Info file as a window 
 		startfile(infoPath)
+	return refName
 
 
 # p = "C:/Users/eltoshon/Desktop/programTestiing/xmltest1.xml"
