@@ -11,7 +11,8 @@ def modifier(xmlFolderPath, xmlFileName, refList, nameList, typeList, referenceE
 		### And insert them after the last referenceSystem if ref entry is not empty
 		if refList[n]:
 			for r in referenceE:
-				if refList[n] == r.find('Name').text:
+				if 'R' + refList[n] == r.find('Name').text:
+					print("im here")
 					copy = writeARefCopy(r, refList[n], nameList[n], typeList[n])
 					root.insert(int(nameList[n])-1, copy) ################## error caused by insert with random index??
 					break
@@ -42,17 +43,17 @@ def writeARefCopy(refToCopy, oldName, newName, typ):
 	return newRefEle
 
 def modifyWireDesRef(oldDes, newDes, wireElement):
-	print("old: " + oldDes)
-	print("new: " + newDes +'\n')
+	# print("old: " + oldDes)
+	# print("new: " + newDes +'\n')
 	for wire in wireElement:
 		secBondDes = wire.findall('Bond')[1].find('Refsys')
-		print("wire's des: " + secBondDes.text)
+		# print("wire's des: " + secBondDes.text)
 		if secBondDes.text == 'R' + oldDes:
 			secBondDes.text = 'R' + newDes
-			print("changed to: " + secBondDes.text)
-		else:
-			print("no changes")
-		print("\n")
+			# print("changed to: " + secBondDes.text)
+		# else:
+			# print("no changes")
+		# print("\n")
 
 ### in-place prettyprint formatter found online --> http://effbot.org/zone/element-lib.htm#prettyprint 
 def indent(elem, level=0):
