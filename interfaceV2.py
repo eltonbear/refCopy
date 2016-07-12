@@ -100,7 +100,8 @@ class App(Frame):
 	def IfErrorAndappendLists(self, row, ref, nam, typ):
 		''' Append to ref, type, dep, and wire list if no entries is emtpy. 
 			Return true if there is any entries missing or incorrect. 
-			All missing is not missing'''
+			if all missing, return false
+			if all exist, append if all in range and formatted correctly'''
 		if ref and nam and typ:
 			# if self.numberInRange(row, ref, nam):
 			# 	self.refs.append(ref)
@@ -116,7 +117,7 @@ class App(Frame):
 			self.allEmpty = False
 			return False
 		elif (not nam) and (not ref) and (not typ):
-			return False # all missing
+			return False
 		elif not ref:
 			self.refEntryMissingWarning(row)
 			return True 
@@ -159,40 +160,35 @@ class App(Frame):
 		return True
 			
 	### Warnings
+	def allEntriesEmptyWarning(self):
+		messagebox.showinfo("Warning", "Nothing has been inputted")
+
 	def refEntryMissingWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number is missing!")
+		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number missing!")
 
 	def nameEntryMissingWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", name is missing!")
+		messagebox.showinfo("Warning", "Row " + str(row) + ", name missing!")
 
 	def typeEntryMissingWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", type is missing!")	
+		messagebox.showinfo("Warning", "Row " + str(row) + ", type missing!")
+
+	def refNumOutOfRnageWarning(self, row):
+		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number out of range!")
+
+	def nameNumOutOfRnageWarning(self, row):
+		messagebox.showinfo("Warning", "Row " + str(row) + ", name out of range!")
+
+	def refEntryFormatIncorrect(self, row):
+		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number format incorrect!")
+
+	def nameEntryFormatIncorrect(self, row):
+		messagebox.showinfo("Warning", "Row " + str(row) + ", name input format incorrect!")	
 
 	def incorrectFileNameWarning(self):
 		messagebox.showinfo("Warning", "File does not exist!")
 
 	def emptyFileNameWarning(self):
 		messagebox.showinfo("Warning", "No files selected!")
-
-	def allEntriesEmptyWarning(self):
-		messagebox.showinfo("Warning", "Nothing is inputted")
-
-	def refNumOutOfRnageWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number out of range!")
-
-	def depNumOutOfRnageWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", dependence number out of range!")#######
-
-	def refEntryFormatIncorrect(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number format incorrect!")
-
-	def depEntryFormatIncorrect(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", dep number format incorrect!")############
-
-	def nameEntryFormatIncorrect(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", name input format incorrect!")
-
-
 
 window = Tk()
 GUI = App(window, None)
