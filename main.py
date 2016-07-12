@@ -16,7 +16,7 @@ if browse.isOk:
 	except ET.ParseError:                       
 		browse.fileFormatIncorrectWarning()
 		fFormat = False
-
+#####3 add refe cant be empty
 	if fFormat:
 		root = tree.getroot()
 		referenceE = root.findall('ReferenceSystem')

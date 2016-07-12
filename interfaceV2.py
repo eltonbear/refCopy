@@ -85,7 +85,7 @@ class App(Frame):
 			ref = self.refEntries[num].get()
 			nam = self.nameEntries[num].get() ####### this will be the dependoon
 			typ = self.typeEntries[num].get()
-			if self.IfErrorAndappendLists(num + 1, ref, nam, typ):
+			if self.ifErrorAndAppendLists(num + 1, ref, nam, typ):
 				self.refs = []
 				self.names = []
 				self.types = []
@@ -97,7 +97,7 @@ class App(Frame):
 
 		return True
 
-	def IfErrorAndappendLists(self, row, ref, nam, typ):
+	def ifErrorAndAppendLists(self, row, ref, nam, typ):
 		''' Append to ref, type, dep, and wire list if no entries is emtpy. 
 			Return true if there is any entries missing or incorrect. 
 			if all missing, return false
@@ -190,13 +190,13 @@ class App(Frame):
 	def emptyFileNameWarning(self):
 		messagebox.showinfo("Warning", "No files selected!")
 
-window = Tk()
-GUI = App(window, None)
-window.mainloop()
+# window = Tk()
+# GUI = App(window, None)
+# window.mainloop()
 
 
-print("copy: " + str(GUI.refs))
-print("names: " + str(GUI.names))
-print("Type: " + str(GUI.types))
+# print("copy: " + str(GUI.refs))
+# print("names: " + str(GUI.names))
+# print("Type: " + str(GUI.types))
 
 			
