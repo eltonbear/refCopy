@@ -5,7 +5,7 @@ from os.path import isfile, split, splitext
 
 class App(Frame):
 
-	def __init__(self, parent, refLimit):            
+	def __init__(self, parent, something):            
 
 		Frame.__init__(self, parent)
 		self.allEmpty = True
@@ -87,8 +87,8 @@ class App(Frame):
 			typ = self.typeEntries[num].get()
 			if self.IfErrorAndappendLists(num + 1, ref, nam, typ):
 				self.refs = []
+				self.names = []
 				self.types = []
-				self.deps = []
 				return False
 
 		if self.allEmpty:
@@ -101,27 +101,32 @@ class App(Frame):
 		''' Append to ref, type, dep, and wire list if no entries is emtpy. 
 			Return true if there is any entries missing or incorrect. 
 			All missing is not missing'''
-		if ref and typ and wire:
-			if self.numberInRange(row, ref, dep, wire):
-				self.refs.append(ref)
-				self.types.append(typ)
-				self.deps.append(dep)
-				self.wires.append(wire) 
-				self.allEmpty = False
-				return False # other three exist(dep does not matter)
-			else:
-				return True
-		elif (not dep) and (not ref) and (not typ) and (not wire):
+		if ref and nam and typ:
+			# if self.numberInRange(row, ref, nam):
+			# 	self.refs.append(ref)
+			# 	self.names.append(nam)
+			# 	self.types.append(typ)				 
+			# 	self.allEmpty = False
+			# 	return False # other three exist(dep does not matter)
+			# else:
+			# 	return True
+			self.refs.append(ref)
+			self.names.append(nam)
+			self.types.append(typ)				 
+			self.allEmpty = False
+			return False
+		elif (not nam) and (not ref) and (not typ):
 			return False # all missing
 		elif not ref:
 			self.refEntryMissingWarning(row)
 			return True 
+		elif not nam:
+			self.nameEntryMissingWarning(row)
+			return True
 		elif not typ:
 			self.typeEntryMissingWarning(row)
 			return True
-		elif not wire:
-			self.wireEntryMissingWarning(row)
-			return True
+		
 
 	def numberInRange(self, row, ref, nam):   ###################################### ref num needs to be in the list, and nam needs to be in the gap
 		""" check if ref and wire numbers are in range. 
@@ -157,11 +162,11 @@ class App(Frame):
 	def refEntryMissingWarning(self, row):
 		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number is missing!")
 
-	def typeEntryMissingWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", type is missing!")
+	def nameEntryMissingWarning(self, row):
+		messagebox.showinfo("Warning", "Row " + str(row) + ", name is missing!")
 
-	def wireEntryMissingWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", wire number(s) is missing!")
+	def typeEntryMissingWarning(self, row):
+		messagebox.showinfo("Warning", "Row " + str(row) + ", type is missing!")	
 
 	def incorrectFileNameWarning(self):
 		messagebox.showinfo("Warning", "File does not exist!")
@@ -176,16 +181,26 @@ class App(Frame):
 		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number out of range!")
 
 	def depNumOutOfRnageWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", dependence number out of range!")
-
-	def wireNumOutOfRnageWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", wire number out of range!")
+		messagebox.showinfo("Warning", "Row " + str(row) + ", dependence number out of range!")#######
 
 	def refEntryFormatIncorrect(self, row):
 		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number format incorrect!")
 
 	def depEntryFormatIncorrect(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", dep number format incorrect!")
+		messagebox.showinfo("Warning", "Row " + str(row) + ", dep number format incorrect!")############
 
-	def wireEntryFormatIncorrect(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", wire input format incorrect!")
+	def nameEntryFormatIncorrect(self, row):
+		messagebox.showinfo("Warning", "Row " + str(row) + ", name input format incorrect!")
+
+
+
+window = Tk()
+GUI = App(window, None)
+window.mainloop()
+
+
+print("copy: " + str(GUI.refs))
+print("names: " + str(GUI.names))
+print("Type: " + str(GUI.types))
+
+			
