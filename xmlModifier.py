@@ -1,4 +1,3 @@
-# import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ElementTree, Element, SubElement
 
 def modifier(xmlFolderPath, xmlFileName, refList, nameList, typeList, referenceE, wireE, tree):
@@ -17,8 +16,8 @@ def modifier(xmlFolderPath, xmlFileName, refList, nameList, typeList, referenceE
 					root.insert(int(nameList[n])-1, copy) ################## error caused by insert with random index??
 					break
 
-		### change wire's ref information		
-		# modifyWireRefInfo(wireList[n], refList[n], str(numOfRef), wireE)
+		### change wire's des		
+		modifyWireDesRef(refList[n], nameList[n], wireE)
 
 	### write to a new xml file
 	newXmlFilePath = xmlFolderPath + "/" + xmlFileName + "_new.xml"
@@ -32,10 +31,8 @@ def writeARefCopy(refToCopy, oldName, newName, typ):
 	newNameEle.text = 'R' + newName
 	newTypeEle = SubElement(newRefEle, 'Type')
 	newTypeEle.text = typ
-	#######################################
 	newDepEle = SubElement(newRefEle, 'Dependon')
 	newDepEle.text = 'R' + oldName
-	#######################################
 	### creat two nodes that refer to original points objects(elements)
 	for p in refToCopy.findall('Point'):
 		newRefEle.append(p)
@@ -44,20 +41,18 @@ def writeARefCopy(refToCopy, oldName, newName, typ):
 	### return the reference(address) of the ref element
 	return newRefEle
 
-def modifyWireRefInfo(listOfWires, oldRefWireWasOn, newRefWireAssignedTo, wireElement):
-	wireToEdit = list(map(int, listOfWires))
-	# print("old: " + oldRefWireWasOn)
-	# print("new: " + newRefWireAssignedTo +'\n') ###### wire can not be more than num of wireelement
-	for wire in wireToEdit:
-		# print("wire number: " + str(wire))
-		for bond in wireElement[wire-1].findall('Bond'):
-			# print("wire's ref num: " + bond.find('Refsys').text)
-			if bond.find('Refsys').text == oldRefWireWasOn:
-				bond.find('Refsys').text = newRefWireAssignedTo
-				# print("changed to: " + bond.find('Refsys').text)
-			# else:
-				# print("no changes")
-		# print("\n")
+def modifyWireDesRef(oldDes, newDes, wireElement):
+	print("old: " + oldDes)
+	print("new: " + newDes +'\n')
+	for wire in wireElement:
+		secBondDes = wire.findall('Bond')[1].find('Refsys')
+		print("wire's des: " + secBondDes.text)
+		if secBondDes.text == 'R' + oldDes:
+			secBondDes.text = 'R' + newDes
+			print("changed to: " + secBondDes.text)
+		else:
+			print("no changes")
+		print("\n")
 
 ### in-place prettyprint formatter found online --> http://effbot.org/zone/element-lib.htm#prettyprint 
 def indent(elem, level=0):
