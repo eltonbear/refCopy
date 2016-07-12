@@ -13,7 +13,7 @@ fFormat = True
 if browse.isOk:
 	try:
 		tree = ET.parse(browse.filePath)                                                     
-	except:
+	except ET.ParseError:                       
 		browse.fileFormatIncorrectWarning()
 		fFormat = False
 
@@ -26,7 +26,7 @@ if browse.isOk:
 		print("num of ref = " + str(numOfRef))
 		print("num of wire = " + str(numOfWire) + '\n')
 		window2 = Tk()
-		GUI = interfaceV2.App(window2, numOfRef, numOfWire)
+		GUI = interfaceV2.App(window2, SOMETHING)
 		window2.mainloop()
 
 		if GUI.isOk:
