@@ -5,11 +5,11 @@ from os.path import isfile, split, splitext
 
 class App(Frame):
 
-	def __init__(self, parent, something):            
+	def __init__(self, parent, refNameList):            
 
 		Frame.__init__(self, parent)
 		self.allEmpty = True
-		self.refNameElements = [] ############## passed in
+		self.refNameList = refNameList
 		self.isOk = False
 		self.parent = parent
 		self.refs = []
@@ -83,7 +83,7 @@ class App(Frame):
 		''' Get inputs in ref, name, and type entries. Return true if successful'''
 		for num in range(0, len(self.refEntries)):
 			ref = self.refEntries[num].get()
-			nam = self.nameEntries[num].get() ####### this will be the dependoon
+			nam = self.nameEntries[num].get()
 			typ = self.typeEntries[num].get()
 			if self.ifErrorAndAppendLists(num + 1, ref, nam, typ):
 				self.refs = []
@@ -97,66 +97,50 @@ class App(Frame):
 
 		return True
 
-	def ifErrorAndAppendLists(self, row, ref, nam, typ):
+	def ifErrorAndAppendLists(self, row, ref, newName, typ):
 		''' Append to ref, type, dep, and wire list if no entries is emtpy. 
 			Return true if there is any entries missing or incorrect. 
 			if all missing, return false
 			if all exist, append if all in range and formatted correctly'''
-		if ref and nam and typ:
-			# if self.numberInRange(row, ref, nam):
-			# 	self.refs.append(ref)
-			# 	self.names.append(nam)
-			# 	self.types.append(typ)				 
-			# 	self.allEmpty = False
-			# 	return False # other three exist(dep does not matter)
-			# else:
-			# 	return True
-			self.refs.append(ref)
-			self.names.append(nam)
-			self.types.append(typ)				 
-			self.allEmpty = False
-			return False
-		elif (not nam) and (not ref) and (not typ):
+		if ref and newName and typ:
+			if self.numberInRange(row, ref, newName):
+				self.refs.append(ref)
+				self.names.append(newName)
+				self.types.append(typ)				 
+				self.allEmpty = False
+				return False # other three exist(dep does not matter)
+			else:
+				return True
+		elif (not newName) and (not ref) and (not typ):
 			return False
 		elif not ref:
 			self.refEntryMissingWarning(row)
 			return True 
-		elif not nam:
+		elif not newName:
 			self.nameEntryMissingWarning(row)
 			return True
 		elif not typ:
 			self.typeEntryMissingWarning(row)
 			return True
-		
 
-	def numberInRange(self, row, ref, nam):   ###################################### ref num needs to be in the list, and nam needs to be in the gap
+	def numberInRange(self, row, oldName, newName):
 		""" check if ref and wire numbers are in range. 
 			Wire and ref numbers have to be int and grater than 0""" 
-		try:
-			if int(ref) > self.refLimit or int(ref) < 1:
-					self.refNumOutOfRnageWarning(row)
-					return False
-		except: 
+		if oldName.isdigit():
+			if oldName not in self.refNameList:
+				self.refNumOutOfRangeWarning(row)
+				return False
+		else:
 			self.refEntryFormatIncorrect(row)
 			return False
 
-		try:
-			if (dep != '') and (int(dep) > self.refLimit or int(dep) < 1):
-				self.depNumOutOfRnageWarning(row)
-				return False 
-		except:
-			self.depEntryFormatIncorrect(row)
-			return False
-
-		for n in range(0, len(wire)):
-			try:
-				if int(wire[n]) > self.wireLimit or int(wire[n]) < 1:   
-					self.wireNumOutOfRnageWarning(row)
-					return False
-			except:
-				self.wireEntryFormatIncorrect(row)
+		if newName.isdigit():
+			if newName in self.refNameList:
+				self.nameNumOutOfRangeWarning(row)
 				return False
-
+		else:
+			self.nameEntryFormatIncorrect(row)
+			return False
 		return True
 			
 	### Warnings
@@ -172,17 +156,17 @@ class App(Frame):
 	def typeEntryMissingWarning(self, row):
 		messagebox.showinfo("Warning", "Row " + str(row) + ", type missing!")
 
-	def refNumOutOfRnageWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number out of range!")
+	def refNumOutOfRangeWarning(self, row):
+		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number does not exist!")
 
-	def nameNumOutOfRnageWarning(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", name out of range!")
+	def nameNumOutOfRangeWarning(self, row):
+		messagebox.showinfo("Warning", "Row " + str(row) + ", name has already been used!")
 
 	def refEntryFormatIncorrect(self, row):
 		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number format incorrect!")
 
 	def nameEntryFormatIncorrect(self, row):
-		messagebox.showinfo("Warning", "Row " + str(row) + ", name input format incorrect!")	
+		messagebox.showinfo("Warning", "Row " + str(row) + ", name format incorrect!")	
 
 	def incorrectFileNameWarning(self):
 		messagebox.showinfo("Warning", "File does not exist!")
