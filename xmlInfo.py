@@ -1,5 +1,6 @@
 from io import open
 from os import startfile
+from os.path import exists
 import re
 
 import xml.etree.ElementTree as ET ###
@@ -31,8 +32,7 @@ def makeXMLInfoTextFile(xmlFilePath, xmlFolderPath, xmlFileName, referenceE, wir
 				prevNum = currNum
 			else:
 				refName.append(numberS)
-				prevNum = int(numberS) ### int
-				print(prevNum)
+				prevNum = int(numberS)
 		
 		### check if there is any repeating names
 		singles = set(refName)
@@ -51,12 +51,12 @@ def makeXMLInfoTextFile(xmlFilePath, xmlFolderPath, xmlFileName, referenceE, wir
 		info.write("#XML File: " + xmlFilePath + '\n\n')
 
 		### write repeating ref name if there is any
+		info.write("#Repeating Reference:\n")
 		if repeat:
-			info.write("#Repeating Reference:\n")
 			for r in repeat:
 				info.write("There are " + str(r[1]) + " R" + r[0] + '\n')
 		else:
-			info.write("There is no repeating references.\n")
+			info.write("None\n")
 
 		### write first and last ref name
 		info.write("\n#First Reference: R" + refName[0] + '\n')
@@ -64,13 +64,16 @@ def makeXMLInfoTextFile(xmlFilePath, xmlFolderPath, xmlFileName, referenceE, wir
 
 		### write refernce gaps
 		info.write("\n#Range of Gaps (included):\n")
-		for g in refNameGap:
-			if len(g) == 1:
-				info.write("R" + str(g[0]) + '\n')
-			else:
-				info.write("R" + str(g[0]) + ' - R' + str(g[1]) + '\n')
+		if refNameGap:
+			for g in refNameGap:
+				if len(g) == 1:
+					info.write("R" + str(g[0]) + '\n')
+				else:
+					info.write("R" + str(g[0]) + ' - R' + str(g[1]) + '\n')
+		else:
+			info.write("None\n")
 
-		info.write("\n#Wire number: 1 - " + str(numOfwire) + "\n")
+		info.write("\n#Number of Wires: " + str(numOfwire) + "\n")
 
 		### Close file
 		info.close()
