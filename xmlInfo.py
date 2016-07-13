@@ -41,15 +41,9 @@ def makeXMLInfoTextFile(xmlFilePath, xmlFolderPath, xmlFileName, referenceE, wir
 			if count > 1:
 				repeat.append([s, count])
 
-		# print(refName)
-		# print(refNameGap)
-		# print(singles)
-		# print(repeat)
 		info = open(infoPath, "w")
-
 		### write file path		
 		info.write("#XML File: " + xmlFilePath + '\n\n')
-
 		### write repeating ref name if there is any
 		info.write("#Repeating Reference:\n")
 		if repeat:
@@ -57,11 +51,9 @@ def makeXMLInfoTextFile(xmlFilePath, xmlFolderPath, xmlFileName, referenceE, wir
 				info.write("There are " + str(r[1]) + " R" + r[0] + '\n')
 		else:
 			info.write("None\n")
-
 		### write first and last ref name
 		info.write("\n#First Reference: R" + refName[0] + '\n')
 		info.write("#Last Reference:  R" + refName[numOfRef-1] + '\n')
-
 		### write refernce gaps
 		info.write("\n#Range of Gaps (included):\n")
 		if refNameGap:

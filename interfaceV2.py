@@ -90,6 +90,27 @@ class App(Frame):
 				self.names = []
 				self.types = []
 				return False
+		print("inputted ref: " + str(self.refs))
+		print("asdfasdfasd: "+ str(self.refNameList))
+
+		###### not sure error check ######
+		nOfInputRef = len(self.refs)
+		largestRefN = int(self.refNameList[-1]) ### if there xml format is wrong. it;s not applicable ex: [1,3,5,9,8] ordering or double
+		nOfExistingRef = len(self.refNameList)
+		nOfMissingRef = largestRefN - nOfExistingRef
+		allowance = nOfInputRef - nOfMissingRef
+		print("num of inputted ref: " + str(nOfInputRef))
+		print("largestExisting: " + str(largestRefN))
+		print("num of existing ref: " + str(nOfExistingRef))
+		print("num of msising ref: "  + str(nOfMissingRef))
+		print("allowance: " + str(allowance))
+		if allowance > 0:
+			maxInputRefNum = max(map(int, self.refs))
+			if maxInputRefNum > largestRefN + allowance:
+				self.nameNumOutOfRangeWarning()
+				return False
+		##################################
+
 
 		if self.allEmpty:
 			self.allEntriesEmptyWarning()

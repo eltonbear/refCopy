@@ -37,7 +37,7 @@ if browse.isOk:
 			print("Type: " + str(GUI.types))
 			print("In main folder path: " + browse.xmlFolderPath + '\n')
 			xmlFilePathNew = modifier(browse.xmlFolderPath, browse.xmlFileName, GUI.refs, GUI.names, GUI.types, referenceE, wireE, tree)
-			makeReceiptTextFile(None, browse.xmlFolderPath, browse.xmlFileName, GUI.refs, GUI.names, GUI.types)
+			makeReceiptTextFile(xmlFilePathNew, browse.xmlFolderPath, browse.xmlFileName, GUI.refs, GUI.names, GUI.types)
 			
 	print("end of code")
 

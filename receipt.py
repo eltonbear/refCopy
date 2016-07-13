@@ -11,7 +11,7 @@ def makeReceiptTextFile(newXmlFilePath, xmlFolderPath, xmlFileName, refList, nam
 	if exists(xmlFolderPath):
 		receipt = open(receiptPath, "w")
 		receipt.write("   Input XML File: " + xmlFolderPath + '/' + xmlFileName + '.xml' + '\n')
-		# receipt.write("Modified XML File: " + newXmlFilePath + '\n\n')
+		receipt.write("Modified XML File: " + newXmlFilePath + '\n\n')
 		receipt.write("Reference to Copy:     New Name:     Reference Type:\n")
 		spaceS = ' '*7 + 'R'
 		total = len(refList)
