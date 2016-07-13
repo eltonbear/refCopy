@@ -78,6 +78,10 @@ class App(Frame):
 		if self.getContent():
 			self.isOk = True
 			self.closeWindow()
+		else:
+			self.refs = []
+			self.names = []
+			self.types = []
 						
 	def getContent(self): 
 		''' Get inputs in oldName, name, and type entries. Return true if successful'''
@@ -86,32 +90,33 @@ class App(Frame):
 			nam = self.nameEntries[num].get()
 			typ = self.typeEntries[num].get()
 			if self.ifErrorAndAppendLists(num + 1, oNam, nam, typ):
-				self.refs = []
-				self.names = []
-				self.types = []
 				return False
-		print("inputted ref: " + str(self.refs))
-		print("asdfasdfasd: "+ str(self.refNameList))
 
-		###### not sure error check ######
-		nOfInputRef = len(self.refs)
-		largestRefN = int(self.refNameList[-1]) ### if there xml format is wrong. it;s not applicable ex: [1,3,5,9,8] ordering or double
-		nOfExistingRef = len(self.refNameList)
-		nOfMissingRef = largestRefN - nOfExistingRef
-		allowance = nOfInputRef - nOfMissingRef
-		print("num of inputted ref: " + str(nOfInputRef))
-		print("largestExisting: " + str(largestRefN))
-		print("num of existing ref: " + str(nOfExistingRef))
-		print("num of msising ref: "  + str(nOfMissingRef))
+		#######################################################
+		print("Ref to Copy: " + str(self.refs))
+		print("Ref num in XML: "+ str(self.refNameList))
+		numRefToCopy = len(self.refs)
+		largestRefNumInXml = int(self.refNameList[-1])
+		numOfRefInXml = len(self.refNameList)
+		numOfMissingRef = largestRefNumInXml - numOfRefInXml
+		allowance = numRefToCopy - numOfMissingRef
+		maxRefNumCanBe = largestRefNumInXml + allowance
+		rowIndex = []
+		print("num of ref to copy: " + str(numRefToCopy))
+		print("largestExisting: " + str(largestRefNumInXml))
+		print("num of existing ref: " + str(numOfRefInXml))
+		print("num of missing ref: "  + str(numOfMissingRef))
 		print("allowance: " + str(allowance))
-		if allowance > 0:
-			maxInputRefNum = max(map(int, self.refs))
-			if maxInputRefNum > largestRefN + allowance:
-				self.nameNumOutOfRangeWarning()
-				return False
-		##################################
+		
 
-
+		for n in range(0, numRefToCopy):
+			if int(self.names[n]) > maxRefNumCanBe:
+				rowIndex.append(n + 1)
+		print("row that has name too large: " + str(rowIndex)+'\n')
+		if rowIndex:
+			self.nameNumTooLarge(rowIndex)
+			return False
+		###########################################################
 		if self.allEmpty:
 			self.allEntriesEmptyWarning()
 			return False
@@ -157,7 +162,7 @@ class App(Frame):
 
 		if newName.isdigit():
 			if newName in self.refNameList:
-				self.nameNumOutOfRangeWarning(row)
+				self.nameNumUsedWarning(row)
 				return False
 		else:
 			self.nameEntryFormatIncorrect(row)
@@ -180,8 +185,11 @@ class App(Frame):
 	def refNumOutOfRangeWarning(self, row):
 		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number does not exist!")
 
-	def nameNumOutOfRangeWarning(self, row):
+	def nameNumUsedWarning(self, row):
 		messagebox.showinfo("Warning", "Row " + str(row) + ", name has already been used!")
+
+	def nameNumTooLarge(self, rows):
+		messagebox.showinfo("Warning", "Row " + ", ".join(map(str, rows)) + ", name number too large!")
 
 	def refEntryFormatIncorrect(self, row):
 		messagebox.showinfo("Warning", "Row " + str(row) + ", reference number format incorrect!")
