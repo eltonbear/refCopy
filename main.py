@@ -26,9 +26,9 @@ if browse.isOk:
 		fFormat = False 
 
 	if fFormat:
-		refNameList = makeXMLInfoTextFile(browse.filePath, browse.xmlFolderPath, browse.xmlFileName, referenceE, wireE)
+		originalXMLRefNameList, LatestXMLRefNameList = makeXMLInfoTextFile(browse.filePath, browse.xmlFolderPath, browse.xmlFileName, referenceE, wireE)
 		window2 = Tk()
-		GUI = interfaceV2.App(window2, refNameList)
+		GUI = interfaceV2.App(window2, originalXMLRefNameList, LatestXMLRefNameList)
 		window2.mainloop()
 
 		if GUI.isOk:

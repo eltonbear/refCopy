@@ -7,6 +7,7 @@ class browse(Frame):
 		Frame.__init__(self, parent, width = 1000)
 		self.parent = parent
 		self.filePath = ""
+		self.ogFilePath = ""
 		self.xmlFolderPath = ""
 		self.xmlFileName = "" # with no extension
 		self.filePathEntry = None
@@ -65,3 +66,6 @@ class browse(Frame):
 
 	def fileFormatIncorrectWarning(self):
 		messagebox.showinfo("Warning", "File: " + self.xmlFileName + " - format incorrect!")
+
+	def originalXmlFileMissing(self, ogFileName):
+		messagebox.showinfo("Warning", "original XML file - " + ogFileName + " Missing!")

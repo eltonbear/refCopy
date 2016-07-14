@@ -21,7 +21,10 @@ def modifier(xmlFolderPath, xmlFileName, refList, nameList, typeList, referenceE
 		modifyWireDesRef(refList[n], nameList[n], wireE)
 
 	### write to a new xml file
-	newXmlFilePath = xmlFolderPath + "/" + xmlFileName + "_new.xml"
+	if xmlFileName[-1].isdigit() and xmlFileName[-5:-1] == "_new":
+		newXmlFilePath = xmlFolderPath + "/" + xmlFileName[0:-1] + str(int(xmlFileName[-1])+1) + ".xml"
+	else:
+		newXmlFilePath = xmlFolderPath + "/" + xmlFileName + "_new1.xml"
 	tree.write(newXmlFilePath)
 	return newXmlFilePath
 
